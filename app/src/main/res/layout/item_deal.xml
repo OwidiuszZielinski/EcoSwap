@@ -13,24 +13,19 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <!-- Obrazek (dekodowany z Base64) -->
-
-        <!-- Tytuł przedmiotu -->
-
         <ImageView
             android:id="@+id/imgDeal"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/deal_image"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintWidth_percent="0.30" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="0.30"/>
+
 
         <TextView
             android:id="@+id/tvTitle"
@@ -50,11 +45,21 @@
             android:id="@+id/tvPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="99.99 zł"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvUserInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="@color/design_default_color_primary"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvPrice"
             app:layout_constraintEnd_toEndOf="@id/tvTitle"
             android:layout_marginTop="4dp"/>
 

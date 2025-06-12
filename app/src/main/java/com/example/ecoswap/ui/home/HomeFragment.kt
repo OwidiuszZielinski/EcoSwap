@@ -33,7 +33,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rvDeals.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDeals.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         dealsAdapter = DealsAdapter(emptyList())
         binding.rvDeals.adapter = dealsAdapter
 
