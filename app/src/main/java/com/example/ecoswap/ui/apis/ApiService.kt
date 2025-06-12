@@ -1,7 +1,6 @@
 package com.example.ecoswap.ui.apis
 
 import com.example.ecoswap.ui.dto.Deal
-import com.example.ecoswap.ui.model.Item
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

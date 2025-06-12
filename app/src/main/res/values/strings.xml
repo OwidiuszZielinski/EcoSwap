@@ -1,8 +1,26 @@
 <resources>
     <string name="app_name">EcoSwap</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home">Hottest</string>
+    <string name="title_dashboard">My Auctions</string>
     <string name="title_notifications">Notifications</string>
-    <string name="preview_img">Podgląd obrazka</string>
-    <string name="deal_image">Obrazek oferty</string>
+    <string name="preview_img">Image Preview</string>
+    <string name="deal_image">Deal Image</string>
+    <string name="add_announcement">Add Announcement</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="photo_preview">Photo Preview</string>
+    <string name="announcement_description">Announcement Description</string>
+    <string name="add_announcement_button">Add Announcement</string>
+    <string name="title">Title</string>
+    <string name="price">Price</string>
+    <string name="to_exchange">To Exchange</string>
+    <string name="price_pln">Price (PLN)</string>
+    <string name="auction_image">Auction Image</string>
+    <string name="edit_auction">Edit Auction</string>
+    <string name="delete_auction">Delete Auction</string>
+    <string name="delete_confirmation">Are you sure you want to delete this auction?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="auction_deleted">Auction deleted successfully</string>
+    <string name="error_deleting_auction">Error deleting auction</string>
+    <string name="no_auctions">You don\'t have any auctions yet</string>
 </resources>
