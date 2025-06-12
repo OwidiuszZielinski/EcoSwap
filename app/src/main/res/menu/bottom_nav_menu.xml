@@ -7,9 +7,9 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_my_auctions"
-        android:title="@string/title_dashboard" />
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search" />
 
     <item
         android:id="@+id/navigation_add_announcement"
@@ -17,13 +17,13 @@
         android:title="@string/add_announcement" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications"
-        android:title="@string/title_notifications" />
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/ic_my_auctions"
+        android:title="@string/title_dashboard" />
 
     <item
-        android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Settings" />
+        android:id="@+id/navigation_awards"
+        android:icon="@drawable/ic_awards"
+        android:title="Awards" />
 
 </menu>

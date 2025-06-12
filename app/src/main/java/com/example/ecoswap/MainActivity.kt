@@ -15,7 +15,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set up toolbar
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        // Set up navigation
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         binding.navView.setupWithNavController(navController)
+
+        // Set up notification and settings button click listeners
+        binding.btnNotifications.setOnClickListener {
+            navController.navigate(R.id.navigation_notifications)
+        }
+
+        binding.btnSettings.setOnClickListener {
+            navController.navigate(R.id.navigation_settings)
+        }
     }
 }
