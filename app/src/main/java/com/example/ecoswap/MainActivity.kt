@@ -2,13 +2,15 @@ package com.example.ecoswap
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.ecoswap.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +22,11 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // Set up navigation
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        navController = navHostFragment.navController
+
+        // Set up bottom navigation
         binding.navView.setupWithNavController(navController)
 
         // Set up notification and settings button click listeners
@@ -30,6 +36,46 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSettings.setOnClickListener {
             navController.navigate(R.id.navigation_settings)
+        }
+
+        // Handle navigation
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.navigation_home -> {
+                    // Clear back stack when navigating to home
+                    navController.popBackStack(R.id.navigation_home, false)
+                }
+                R.id.navigation_settings -> {
+                    // Enable up navigation for settings
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                else -> {
+                    // Disable up navigation for other destinations
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+            }
+        }
+
+        // Handle up navigation
+        binding.toolbar.setNavigationOnClickListener {
+            when (navController.currentDestination?.id) {
+                R.id.navigation_settings -> {
+                    navController.navigate(R.id.navigation_home)
+                }
+                else -> {
+                    onBackPressed()
+                }
+            }
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return when (navController.currentDestination?.id) {
+            R.id.navigation_settings -> {
+                navController.navigate(R.id.navigation_home)
+                true
+            }
+            else -> navController.navigateUp() || super.onSupportNavigateUp()
         }
     }
 }
