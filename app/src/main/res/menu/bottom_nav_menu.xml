@@ -12,6 +12,11 @@
         android:title="@string/title_dashboard" />
 
     <item
+        android:id="@+id/navigation_add_announcement"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Dodaj" />
+
+    <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_notifications"
         android:title="@string/title_notifications" />

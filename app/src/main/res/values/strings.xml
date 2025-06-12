@@ -3,6 +3,15 @@
     <string name="title_home">Hottest</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="preview_img">Podgląd obrazka</string>
-    <string name="deal_image">Obrazek oferty</string>
+    <string name="preview_img">Image Preview</string>
+    <string name="deal_image">Deal Image</string>
+    <string name="add_announcement">Add Announcement</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="photo_preview">Photo Preview</string>
+    <string name="announcement_description">Announcement Description</string>
+    <string name="add_announcement_button">Add Announcement</string>
+    <string name="title">Title</string>
+    <string name="price">Price</string>
+    <string name="to_exchange">To Exchange</string>
+    <string name="price_pln">Price (PLN)</string>
 </resources>
