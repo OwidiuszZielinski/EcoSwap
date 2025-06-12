@@ -54,10 +54,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.btnAddAnnouncement.setOnClickListener {
-            Log.d("HomeFragment", "Add announcement button clicked")
-            findNavController().navigate(R.id.navigation_add_announcement)
-        }
     }
 
     override fun onDestroyView() {

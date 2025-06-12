@@ -21,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Obsługa przycisku logowania e-mail/hasło
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
@@ -42,10 +41,9 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        // odcisk palca
+        // Przygotuj prompt biometryczny
         val executor: Executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
-            // Sukces biometrii 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
                 startActivity(
@@ -72,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
             .setNegativeButtonText("Anuluj")
             .build()
 
-        // Obsługa przycisku logowania biometrycznego
         binding.fingerprintButton.setOnClickListener {
             val biometricManager = BiometricManager.from(this)
             if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {

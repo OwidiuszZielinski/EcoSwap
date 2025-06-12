@@ -9,7 +9,13 @@
         android:id="@+id/navigation_home"
         android:name="com.example.ecoswap.ui.home.HomeFragment"
         android:label="Hottest 🔥"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_add_announcement"
+            app:destination="@id/navigation_add_announcement"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"
