@@ -56,8 +56,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("androidx.biometric:biometric:1.1.0")
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.core.ktx.v1101)
+    implementation(libs.androidx.appcompat.v161)
+    implementation(libs.material.v190)
 }
