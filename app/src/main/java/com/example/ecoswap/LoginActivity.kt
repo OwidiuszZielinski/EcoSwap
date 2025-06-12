@@ -21,26 +21,31 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Obsługa przycisku logowania e-mail/hasło
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            // Prosta walidacja (możesz dodać własną logikę)
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                // Po zalogowaniu przejdź do MainActivity
+            // Pobierz zapisane dane
+            val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+            val savedEmail = prefs.getString("email", null)
+            val savedPassword = prefs.getString("password", null)
+
+            if (email == savedEmail && password == savedPassword) {
                 startActivity(
                     Intent(this, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                 )
             } else {
-                Toast.makeText(this, "Podaj email i hasło", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Nieprawidłowy email lub hasło", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Przygotuj prompt biometryczny
+        // odcisk palca
         val executor: Executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            // Sukces biometrii 
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
                 startActivity(
@@ -67,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
             .setNegativeButtonText("Anuluj")
             .build()
 
+        // Obsługa przycisku logowania biometrycznego
         binding.fingerprintButton.setOnClickListener {
             val biometricManager = BiometricManager.from(this)
             if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
@@ -74,6 +80,11 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Biometria niedostępna na tym urządzeniu", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // Obsługa przycisku rejestracji
+        binding.registerButton.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 }

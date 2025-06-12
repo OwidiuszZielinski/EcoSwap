@@ -26,9 +26,9 @@ class BiometricLoginActivity : AppCompatActivity() {
     private fun setupBiometricAuthentication() {
         val executor: Executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
+            // Sukces biometrii
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
-                // Po sukcesie przejdź do MainActivity
                 startActivity(
                     Intent(this@BiometricLoginActivity, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -37,6 +37,7 @@ class BiometricLoginActivity : AppCompatActivity() {
                 finish()
             }
 
+            // Błąd biometrii 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
                 finish()
@@ -44,20 +45,22 @@ class BiometricLoginActivity : AppCompatActivity() {
 
             override fun onAuthenticationFailed() {
                 super.onAuthenticationFailed()
-                // Możesz dodać informację o nieudanej próbie
             }
         })
 
+        // Konfiguracja promptu biometrycznego
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Logowanie biometryczne")
             .setSubtitle("Użyj odcisku palca, aby zalogować się")
             .setNegativeButtonText("Anuluj")
             .build()
 
+        // Sprawdź czy biometria jest dostępna na urządzeniu
         val biometricManager = BiometricManager.from(this)
         if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
             biometricPrompt.authenticate(promptInfo)
         } else {
+            // Jeśli biometria niedostępna, zamknij aktywność
             finish()
         }
     }
