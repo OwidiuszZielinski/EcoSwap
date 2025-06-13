@@ -25,6 +25,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.util.Log
+import com.example.ecoswap.ui.dto.AppNotifications
 
 class MainActivity : AppCompatActivity() {
 
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
         // Start checking for unread messages
         checkUnreadMessages()
+        updateNotificationBadge()
     }
 
     private fun checkUnreadMessages() {
@@ -118,15 +120,18 @@ class MainActivity : AppCompatActivity() {
             parent.removeView(it)
         }
 
-        if (hasUnreadMessages) {
-            // Create badge with exclamation mark
+        // Update icon based on unread notifications
+        if (AppNotifications.hasUnreadNotifications()) {
+            notificationButton.setImageResource(R.drawable.ic_notifications_active)
+            
+            // Create badge with number
             val badge = TextView(this).apply {
                 tag = "badge"
-                text = "!"
+                text = AppNotifications.getUnreadCount().toString()
                 setTextColor(Color.WHITE)
-                textSize = 16f
+                textSize = 12f
                 setBackgroundColor(Color.RED)
-                setPadding(12, 6, 12, 6)
+                setPadding(8, 4, 8, 4)
                 elevation = 4f
             }
 
@@ -140,12 +145,15 @@ class MainActivity : AppCompatActivity() {
                 rightMargin = 4
             }
             parent.addView(badge, params)
+        } else {
+            notificationButton.setImageResource(R.drawable.ic_notifications)
         }
     }
 
     override fun onResume() {
         super.onResume()
         checkUnreadMessages()
+        updateNotificationBadge()
     }
 
     override fun onSupportNavigateUp(): Boolean {

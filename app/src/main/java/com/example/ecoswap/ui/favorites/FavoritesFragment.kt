@@ -11,6 +11,9 @@ import android.widget.TextView
 import com.example.ecoswap.R
 import com.example.ecoswap.databinding.FragmentFavoritesBinding
 import kotlinx.coroutines.launch
+import com.example.ecoswap.ui.dto.Deal
+import com.example.ecoswap.ui.dto.FavoritesManager
+import com.example.ecoswap.ui.apis.RetrofitInstance
 
 class FavoritesFragment : Fragment() {
 
@@ -34,41 +37,24 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        favoritesAdapter = FavoritesAdapter()
-        favoritesAdapter.setOnRemoveClickListener { item ->
-            removeFromFavorites(item)
+        favoritesAdapter = FavoritesAdapter { deal ->
+            FavoritesManager.removeFavorite(requireContext(), deal)
+            loadFavorites()
         }
         binding.rvFavorites.adapter = favoritesAdapter
     }
 
     private fun loadFavorites() {
         viewLifecycleOwner.lifecycleScope.launch {
-            // TODO: Load favorites from database/API
-            // For now, show some sample data
-            val sampleItems = listOf(
-                FavoriteItem(
-                    id = "1",
-                    title = "Sample Item 1",
-                    description = "This is a sample favorite item"
-                ),
-                FavoriteItem(
-                    id = "2",
-                    title = "Sample Item 2",
-                    description = "Another sample favorite item"
-                )
-            )
-            favoritesAdapter.submitList(sampleItems)
-            updateEmptyState()
-        }
-    }
-
-    private fun removeFromFavorites(item: FavoriteItem) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            // TODO: Remove from database/API
-            val currentList = favoritesAdapter.currentList.toMutableList()
-            currentList.remove(item)
-            favoritesAdapter.submitList(currentList)
-            updateEmptyState()
+            try {
+                val allDeals = RetrofitInstance.api.getBestDeals() // lub inna metoda pobierania wszystkich ogłoszeń
+                val favoriteDeals = allDeals.filter { FavoritesManager.isFavorite(it) }
+                favoritesAdapter.submitList(favoriteDeals)
+                updateEmptyState()
+            } catch (e: Exception) {
+                favoritesAdapter.submitList(emptyList())
+                updateEmptyState()
+            }
         }
     }
 

@@ -23,4 +23,5 @@
     <string name="auction_deleted">Auction deleted successfully</string>
     <string name="error_deleting_auction">Error deleting auction</string>
     <string name="no_auctions">You don\'t have any auctions yet</string>
+    <string name="add_to_favorites">Dodaj do ulubionych</string>
 </resources>
