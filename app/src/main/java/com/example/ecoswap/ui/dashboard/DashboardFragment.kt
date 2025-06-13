@@ -97,10 +97,13 @@ class DashboardFragment : Fragment() {
     private fun deleteAuction(deal: com.example.ecoswap.ui.dto.Deal) {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // TODO: Implement actual delete API call
-                // For now, just show a success message
-                Toast.makeText(requireContext(), R.string.auction_deleted, Toast.LENGTH_SHORT).show()
-                loadUserAuctions() // Reload the list
+                val response = RetrofitInstance.api.deleteItem(deal.id)
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), R.string.auction_deleted, Toast.LENGTH_SHORT).show()
+                    loadUserAuctions() // Reload the list after deletion
+                } else {
+                    Toast.makeText(requireContext(), R.string.error_deleting_auction, Toast.LENGTH_SHORT).show()
+                }
             } catch (e: Exception) {
                 Log.e("DashboardFragment", "Error deleting auction", e)
                 Toast.makeText(requireContext(), R.string.error_deleting_auction, Toast.LENGTH_SHORT).show()
