@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.ecoswap.LoginActivity
 import com.example.ecoswap.UserManager
 import com.example.ecoswap.databinding.FragmentSettingsBinding
+import com.example.ecoswap.ui.ChatActivity
 
 class SettingsFragment : Fragment() {
 
@@ -51,6 +52,13 @@ class SettingsFragment : Fragment() {
             }
             startActivity(intent)
             requireActivity().finish()
+        }
+
+        binding.btnStartChat.setOnClickListener {
+            val intent = Intent(requireContext(), ChatActivity::class.java)
+            intent.putExtra("receiverId", UserManager.ownerId)
+            intent.putExtra("userName", UserManager.ownerId)
+            startActivity(intent)
         }
     }
 

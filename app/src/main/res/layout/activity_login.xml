@@ -26,7 +26,7 @@
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hasło"
+        android:hint="Password"
         android:inputType="textPassword"
         android:layout_marginBottom="16dp"/>
 
@@ -34,25 +34,25 @@
         android:id="@+id/switchRememberMe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zapamiętaj mnie"
+        android:text="Remember me"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zaloguj się"/>
+        android:text="Log in"/>
 
     <Button
         android:id="@+id/fingerprintButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zaloguj się odciskiem palca"/>
+        android:text="Log in with fingerprint"/>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zarejestruj się"
+        android:text="Register"
         android:layout_marginTop="16dp"/>
 </LinearLayout>
