@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecoswap.R
+import com.example.ecoswap.UserManager
 import com.example.ecoswap.databinding.FragmentDashboardBinding
 import com.example.ecoswap.ui.MyAuctionsAdapter
 import com.example.ecoswap.ui.apis.RetrofitInstance
@@ -56,8 +57,7 @@ class DashboardFragment : Fragment() {
     private fun loadUserAuctions() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // TODO: Replace with actual API call to get user's auctions
-                val userAuctions = RetrofitInstance.api.getBestDeals() // Temporary using best deals
+                val userAuctions = RetrofitInstance.api.getByOwnerId(UserManager.ownerId)
                 if (userAuctions.isEmpty()) {
                     binding.tvNoAuctions.visibility = View.VISIBLE
                     binding.rvMyAuctions.visibility = View.GONE

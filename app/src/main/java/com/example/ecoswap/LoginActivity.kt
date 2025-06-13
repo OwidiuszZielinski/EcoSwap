@@ -21,21 +21,38 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Check if user is already logged in
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        if (prefs.getBoolean("is_logged_in", false)) {
+            startActivity(
+                Intent(this, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+            )
+            finish()
+            return
+        }
+
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
             // Pobierz zapisane dane
-            val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
             val savedEmail = prefs.getString("email", null)
             val savedPassword = prefs.getString("password", null)
 
             if (email == savedEmail && password == savedPassword) {
+                // Save login state if "Remember Me" is checked
+                if (binding.switchRememberMe.isChecked) {
+                    prefs.edit().putBoolean("is_logged_in", true).apply()
+                }
+                
                 startActivity(
                     Intent(this, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                 )
+                finish()
             } else {
                 Toast.makeText(this, "Nieprawidłowy email lub hasło", Toast.LENGTH_SHORT).show()
             }
@@ -46,11 +63,16 @@ class LoginActivity : AppCompatActivity() {
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
+                // Save login state if "Remember Me" is checked
+                if (binding.switchRememberMe.isChecked) {
+                    prefs.edit().putBoolean("is_logged_in", true).apply()
+                }
                 startActivity(
                     Intent(this@LoginActivity, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                 )
+                finish()
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {

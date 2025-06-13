@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.ecoswap.LoginActivity
+import com.example.ecoswap.UserManager
 import com.example.ecoswap.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -37,10 +38,12 @@ class SettingsFragment : Fragment() {
 
         binding.switchTheme.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
+        binding.tvUserInfo.text = "Zalogowano jako: ${UserManager.ownerId}"
+
         binding.btnLogout.setOnClickListener {
             requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE)
                 .edit()
-                .clear()
+                .putBoolean("is_logged_in", false)
                 .apply()
 
             val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
