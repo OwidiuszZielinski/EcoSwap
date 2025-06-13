@@ -39,11 +39,13 @@ class NotificationsFragment : Fragment() {
         (activity as? MainActivity)?.let { mainActivity ->
             mainActivity.hasUnreadMessages = false
             mainActivity.updateNotificationBadge()
+            mainActivity.hideBottomNavigation()
         }
     }
 
     private fun setupRecyclerView() {
         binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMessages.setPadding(0, 0, 0, 100)
     }
 
     private fun loadMessages() {
@@ -83,6 +85,9 @@ class NotificationsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (activity as? MainActivity)?.let { mainActivity ->
+            mainActivity.showBottomNavigation()
+        }
         _binding = null
     }
 }

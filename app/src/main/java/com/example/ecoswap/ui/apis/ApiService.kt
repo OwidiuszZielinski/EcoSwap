@@ -3,6 +3,7 @@ package com.example.ecoswap.ui.apis
 import com.example.ecoswap.ui.dto.Deal
 import com.example.ecoswap.ui.dto.ItemResponse
 import com.example.ecoswap.ui.dto.Message
+import com.example.ecoswap.ui.dto.User
 import com.google.gson.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -55,6 +56,9 @@ interface ApiService {
 
     @PUT("messages/{messageId}/read")
     suspend fun markMessageAsRead(@Path("messageId") messageId: String): Response<Unit>
+
+    @GET("users/{id}")
+    suspend fun getUserById(@Path("id") id: String): User
 }
 
 object RetrofitInstance {

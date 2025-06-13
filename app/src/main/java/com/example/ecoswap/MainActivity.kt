@@ -150,4 +150,12 @@ class MainActivity : AppCompatActivity() {
             else -> navController.navigateUp() || super.onSupportNavigateUp()
         }
     }
+
+    fun hideBottomNavigation() {
+        findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
+    }
+
+    fun showBottomNavigation() {
+        findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view)?.visibility = View.VISIBLE
+    }
 }

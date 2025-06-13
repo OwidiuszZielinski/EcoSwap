@@ -11,9 +11,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.ecoswap.R
+import com.example.ecoswap.ui.apis.RetrofitInstance
 import com.example.ecoswap.ui.dto.Deal
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 
 class AuctionDetailsActivity : AppCompatActivity() {
 
@@ -69,7 +72,9 @@ class AuctionDetailsActivity : AppCompatActivity() {
         }
 
         btnStartChat.setOnClickListener {
-            val intent = Intent(this, ChatActivity::class.java)
+            val intent = Intent(this@AuctionDetailsActivity, ChatActivity::class.java)
+            intent.putExtra("receiverId", deal.ownerId)
+            intent.putExtra("userName", deal.ownerId)
             startActivity(intent)
         }
     }
