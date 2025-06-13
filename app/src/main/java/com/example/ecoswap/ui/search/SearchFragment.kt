@@ -38,10 +38,10 @@ class SearchFragment : Fragment() {
         // Location filter (all Polish voivodeships)
         val locations = listOf(
             "All locations",
-            "Dolnośląskie", "Kujawsko-Pomorskie", "Lubelskie", "Lubuskie",
-            "Łódzkie", "Małopolskie", "Mazowieckie", "Opolskie",
-            "Podkarpackie", "Podlaskie", "Pomorskie", "Śląskie",
-            "Świętokrzyskie", "Warmińsko-Mazurskie", "Wielkopolskie", "Zachodniopomorskie"
+            "Dolnoslaskie", "Kujawsko-Pomorskie", "Lubelskie", "Lubuskie",
+            "Lodzkie", "Malopolskie", "Mazowieckie", "Opolskie",
+            "Podkarpackie", "Podlaskie", "Pomorskie", "Slaskie",
+            "Swietokrzyskie", "Warminsko-Mazurskie", "Wielkopolskie", "Zachodniopomorskie"
         )
         val locationAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, locations)
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
