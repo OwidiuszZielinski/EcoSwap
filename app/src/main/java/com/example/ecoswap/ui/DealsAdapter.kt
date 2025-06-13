@@ -39,7 +39,7 @@ class DealsAdapter(
             holder.tvPrice.text = String.format("%.2f PLN/day", deal.price)
         }
         
-        holder.tvUserInfo.text = "Added by: ${deal.userName}"
+        holder.tvUserInfo.text = "Added by: ${deal.ownerId}"
 
         try {
             val decodedBytes = Base64.decode(deal.photoDataUrl, Base64.DEFAULT)

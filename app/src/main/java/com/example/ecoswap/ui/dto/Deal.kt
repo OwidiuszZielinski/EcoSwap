@@ -8,7 +8,6 @@ data class Deal(
     val price: Double,
     val photoDataUrl: String,
     val photoUrl: String?,
-    val userId: String,
-    val userName: String,
-    val userEmail: String
+    val ownerId: String,
+    val description: String
 ) : Serializable
