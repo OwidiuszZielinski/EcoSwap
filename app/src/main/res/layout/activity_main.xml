@@ -13,16 +13,18 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="match_parent"
             android:background="?attr/colorPrimary"
+            android:paddingTop="14dp"
+            android:paddingBottom="6dp"
             app:title="@string/app_name">
 
             <ImageView
                 android:id="@+id/ivEcoLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/app_name"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -30,19 +32,27 @@
                 android:layout_gravity="end"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/btnNotifications"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/title_notifications"
-                    android:src="@drawable/ic_notifications"
-                    android:tint="@color/white" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnNotifications"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/title_notifications"
+                        android:src="@drawable/ic_notifications"
+                        android:tint="@color/white" />
+
+                </FrameLayout>
 
                 <ImageButton
                     android:id="@+id/btnSettings"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Settings"
                     android:src="@drawable/ic_settings"

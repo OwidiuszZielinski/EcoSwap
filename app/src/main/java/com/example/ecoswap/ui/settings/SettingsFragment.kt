@@ -1,12 +1,14 @@
 package com.example.ecoswap.ui.settings
 
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.example.ecoswap.LoginActivity
+import com.example.ecoswap.UserManager
 import com.example.ecoswap.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -26,7 +28,6 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up theme switch
         binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -35,8 +36,22 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // Set initial state based on current theme
         binding.switchTheme.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+
+        binding.tvUserInfo.text = "Zalogowano jako: ${UserManager.ownerId}"
+
+        binding.btnLogout.setOnClickListener {
+            requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean("is_logged_in", false)
+                .apply()
+
+            val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            requireActivity().finish()
+        }
     }
 
     override fun onDestroyView() {

@@ -40,14 +40,13 @@ class AuctionDetailsActivity : AppCompatActivity() {
         // Set deal data
         tvAuctionTitle.text = deal.title
         tvAuctionPrice.text = if (deal.price == 0.00) "To exchange" else String.format("%.2f PLN/day", deal.price)
-        tvSellerInfo.text = "Added by: ${deal.userName}\nContact: ${deal.userEmail}"
+        tvSellerInfo.text = "Added by: ${deal.ownerId}"
 
         try {
             val decodedBytes = Base64.decode(deal.photoDataUrl, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
             ivAuctionImage.setImageBitmap(bitmap)
         } catch (e: Exception) {
-            // Handle image loading error
         }
 
         // Set up click listeners
@@ -61,8 +60,6 @@ class AuctionDetailsActivity : AppCompatActivity() {
 
         btnStartChat.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra("userName", deal.userName)
-            intent.putExtra("userEmail", deal.userEmail)
             startActivity(intent)
         }
     }

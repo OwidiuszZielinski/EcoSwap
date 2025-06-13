@@ -6,14 +6,6 @@
     android:gravity="center"
     android:padding="32dp">
 
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:src="@drawable/eco"
-        android:contentDescription="@string/app_name"
-        android:layout_marginBottom="24dp"/>
-
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
@@ -30,29 +22,17 @@
         android:inputType="textPassword"
         android:layout_marginBottom="16dp"/>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchRememberMe"
+    <EditText
+        android:id="@+id/confirmPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zapamiętaj mnie"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Zaloguj się"/>
-
-    <Button
-        android:id="@+id/fingerprintButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Zaloguj się odciskiem palca"/>
+        android:hint="Powtórz hasło"
+        android:inputType="textPassword"
+        android:layout_marginBottom="24dp"/>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zarejestruj się"
-        android:layout_marginTop="16dp"/>
+        android:text="Zarejestruj się"/>
 </LinearLayout>

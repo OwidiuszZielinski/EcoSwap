@@ -42,6 +42,7 @@
             android:name=".ui.ChatActivity"
             android:exported="false"
             android:theme="@style/Theme.EcoSwap.NoActionBar" />
+        <activity android:name=".RegisterActivity" />
     </application>
 
 </manifest>
