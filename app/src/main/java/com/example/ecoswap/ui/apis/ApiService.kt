@@ -45,6 +45,9 @@ interface ApiService {
     @DELETE("items/{id}")
     suspend fun deleteItem(@Path("id") id: String): Response<Unit>
 
+    @PUT("items/{id}")
+    suspend fun updateItem(@Path("id") id: String, @Body item: Deal): ItemResponse
+
     @POST("messages")
     suspend fun sendMessage(@Body message: Message): Message
 

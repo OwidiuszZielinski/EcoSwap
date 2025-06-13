@@ -27,7 +27,11 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.example.ecoswap.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_navigation_dashboard_to_editDealFragment"
+            app:destination="@id/editDealFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -60,5 +64,16 @@
         android:icon="@android:drawable/ic_input_add"
         android:title="@string/add_announcement"
         tools:layout="@layout/dialog_add_announcement" />
+
+    <fragment
+        android:id="@+id/editDealFragment"
+        android:name="com.example.ecoswap.ui.edit.EditDealFragment"
+        android:label="Edytuj ogłoszenie"
+        tools:layout="@layout/fragment_edit_deal">
+        <argument
+            android:name="deal"
+            app:argType="com.example.ecoswap.ui.dto.Deal"
+            app:nullable="false" />
+    </fragment>
 
 </navigation>

@@ -16,6 +16,7 @@ import com.example.ecoswap.databinding.FragmentDashboardBinding
 import com.example.ecoswap.ui.MyAuctionsAdapter
 import com.example.ecoswap.ui.apis.RetrofitInstance
 import kotlinx.coroutines.launch
+import androidx.navigation.fragment.findNavController
 
 class DashboardFragment : Fragment() {
 
@@ -44,8 +45,8 @@ class DashboardFragment : Fragment() {
         auctionsAdapter = MyAuctionsAdapter(
             emptyList(),
             onEditClick = { deal ->
-                // TODO: Implement edit functionality
-                Toast.makeText(requireContext(), "Edit functionality coming soon", Toast.LENGTH_SHORT).show()
+                val action = com.example.ecoswap.ui.dashboard.DashboardFragmentDirections.actionNavigationDashboardToEditDealFragment(deal)
+                findNavController().navigate(action)
             },
             onDeleteClick = { deal ->
                 showDeleteConfirmationDialog(deal)
@@ -67,8 +68,8 @@ class DashboardFragment : Fragment() {
                     auctionsAdapter = MyAuctionsAdapter(
                         userAuctions,
                         onEditClick = { deal ->
-                            // TODO: Implement edit functionality
-                            Toast.makeText(requireContext(), "Edit functionality coming soon", Toast.LENGTH_SHORT).show()
+                            val action = com.example.ecoswap.ui.dashboard.DashboardFragmentDirections.actionNavigationDashboardToEditDealFragment(deal)
+                            findNavController().navigate(action)
                         },
                         onDeleteClick = { deal ->
                             showDeleteConfirmationDialog(deal)
