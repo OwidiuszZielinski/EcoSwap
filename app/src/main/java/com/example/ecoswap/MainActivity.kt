@@ -94,7 +94,10 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val receivedMessages = RetrofitInstance.api.getReceivedMessages(UserManager.ownerId)
-                hasUnreadMessages = receivedMessages.any { !it.read }
+                val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                val lastCount = prefs.getInt("last_message_count", 0)
+                val currentUnread = receivedMessages.count { !it.read }
+                hasUnreadMessages = currentUnread > 0 && currentUnread > lastCount
                 updateNotificationBadge()
             } catch (e: Exception) {
                 Log.e("MainActivity", "Error checking unread messages", e)
@@ -157,5 +160,20 @@ class MainActivity : AppCompatActivity() {
 
     fun showBottomNavigation() {
         findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.nav_view)?.visibility = View.VISIBLE
+    }
+
+    fun resetMessageCounter() {
+        lifecycleScope.launch {
+            try {
+                val receivedMessages = RetrofitInstance.api.getReceivedMessages(UserManager.ownerId)
+                val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                val currentUnread = receivedMessages.count { !it.read }
+                prefs.edit().putInt("last_message_count", currentUnread).apply()
+                hasUnreadMessages = false
+                updateNotificationBadge()
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error resetting message counter", e)
+            }
+        }
     }
 }

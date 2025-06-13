@@ -70,6 +70,7 @@ class NotificationsFragment : Fragment() {
                             }
                         }
                     }
+                    (activity as? MainActivity)?.resetMessageCounter()
                 }
             } catch (e: Exception) {
                 Log.e("NotificationsFragment", "Error loading messages", e)
