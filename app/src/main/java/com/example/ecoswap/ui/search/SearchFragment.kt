@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.ecoswap.databinding.FragmentSearchBinding
+import android.widget.SeekBar
 import android.widget.ArrayAdapter
 
 class SearchFragment : Fragment() {
@@ -46,18 +47,15 @@ class SearchFragment : Fragment() {
         locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.locationSpinner.adapter = locationAdapter
 
-        // Price from filter
-        val pricesFrom = listOf("Any", "0", "50", "100", "200", "500", "1000", "2000", "5000")
-        val priceFromAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, pricesFrom)
-        priceFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.priceFromSpinner.adapter = priceFromAdapter
-
-        // Price to filter
-        val pricesTo = listOf("Any", "50", "100", "200", "500", "1000", "2000", "5000", "10000+")
-        val priceToAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, pricesTo)
-        priceToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.priceToSpinner.adapter = priceToAdapter
-
+        // Price filter
+        binding.priceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                binding.priceLabel.text = "Price: $progress"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+        
         // Condition filter
         val conditions = listOf("Any", "New", "Like new", "Used", "Damaged")
         val conditionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, conditions)
@@ -69,6 +67,24 @@ class SearchFragment : Fragment() {
         val sortAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions)
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.sortSpinner.adapter = sortAdapter
+
+        // Delivery options
+        val deliveryOptions = listOf("Any", "Pickup", "Courier", "In-person")
+        val deliveryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, deliveryOptions)
+        deliveryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.deliverySpinner.adapter = deliveryAdapter
+
+        // Negotiable price
+        val negotiableOptions = listOf("Any", "Yes", "No")
+        val negotiableAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, negotiableOptions)
+        negotiableAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.negotiableSpinner.adapter = negotiableAdapter
+
+        // Listing type
+        val listingTypes = listOf("Any", "For sale", "For exchange", "For free")
+        val listingTypeAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listingTypes)
+        listingTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.listingTypeSpinner.adapter = listingTypeAdapter
 
         // TODO: Implement search and sorting functionality
     }

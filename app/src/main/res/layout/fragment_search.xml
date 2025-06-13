@@ -6,53 +6,114 @@
     android:layout_height="match_parent">
 
     <!-- Search field -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search phrase"
+        android:textStyle="bold"/>
     <EditText
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Search listings" />
 
-    <!-- Filter: Category -->
+    <!-- Category filter -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
     <Spinner
         android:id="@+id/categorySpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_height="wrap_content" />
 
-    <!-- Filter: Location -->
+    <!-- Location filter -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location (Polish voivodeships)"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
     <Spinner
         android:id="@+id/locationSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_height="wrap_content" />
 
-    <!-- Filter: Price from -->
-    <Spinner
-        android:id="@+id/priceFromSpinner"
+    <!-- Price filter -->
+    <TextView
+    android:id="@+id/priceLabel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Price: 0"
+    android:textStyle="bold"
+    android:layout_marginTop="8dp"/>
+<SeekBar
+    android:id="@+id/priceSeekBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:max="10000" />
+
+    <!-- Condition filter -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
-
-    <!-- Filter: Price to -->
-    <Spinner
-        android:id="@+id/priceToSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
-
-    <!-- Filter: Condition -->
+        android:text="Condition"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
     <Spinner
         android:id="@+id/conditionSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_height="wrap_content" />
 
-    <!-- Sort by -->
+    <!-- Delivery options filter -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delivery options"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+    <Spinner
+        android:id="@+id/deliverySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Negotiable price filter -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Negotiable price"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+    <Spinner
+        android:id="@+id/negotiableSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Listing type filter -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Listing type"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
+    <Spinner
+        android:id="@+id/listingTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Sort by filter -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"/>
     <Spinner
         android:id="@+id/sortSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_height="wrap_content" />
 
     <!-- Search button -->
     <Button

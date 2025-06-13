@@ -18,7 +18,7 @@
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Hasło"
+        android:hint="Password"
         android:inputType="textPassword"
         android:layout_marginBottom="16dp"/>
 
@@ -26,7 +26,7 @@
         android:id="@+id/confirmPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Powtórz hasło"
+        android:hint="Confirm password"
         android:inputType="textPassword"
         android:layout_marginBottom="24dp"/>
 
@@ -34,5 +34,5 @@
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zarejestruj się"/>
+        android:text="Register"/>
 </LinearLayout>
