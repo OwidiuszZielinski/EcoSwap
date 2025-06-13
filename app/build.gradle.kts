@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
@@ -60,4 +61,9 @@ dependencies {
     implementation(libs.androidx.core.ktx.v1101)
     implementation(libs.androidx.appcompat.v161)
     implementation(libs.material.v190)
+
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
 }

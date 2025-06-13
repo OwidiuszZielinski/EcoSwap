@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.navigation_settings)
         }
 
+        binding.btnFavorites.setOnClickListener {
+            navController.navigate(R.id.navigation_favorites)
+        }
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_home -> {

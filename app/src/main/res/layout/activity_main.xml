@@ -48,6 +48,22 @@
 
                 </FrameLayout>
 
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnFavorites"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Favorites"
+                        android:src="@drawable/ic_favorite_border"
+                        android:tint="@color/white" />
+
+                </FrameLayout>
+
                 <ImageButton
                     android:id="@+id/btnSettings"
                     android:layout_width="48dp"

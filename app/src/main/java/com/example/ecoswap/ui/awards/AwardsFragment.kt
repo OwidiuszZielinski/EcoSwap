@@ -9,24 +9,28 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecoswap.databinding.FragmentAwardsBinding
-import kotlin.random.Random
+import com.example.ecoswap.data.repository.AwardRepository
+import com.example.ecoswap.data.db.AppDatabase
+import kotlinx.coroutines.launch
 
 class AwardsFragment : Fragment() {
 
     private var _binding: FragmentAwardsBinding? = null
     private val binding get() = _binding!!
-    
-    private var loyaltyPoints = 200
-    private val boxCost = 100
-    private val possibleRewards = listOf(
-        "10% discount on next rental",
-        "Free delivery",
-        "24h premium membership",
-        "50 bonus points",
-        "Special badge"
-    )
+
+    private lateinit var recentAwardsAdapter: RecentAwardsAdapter
+
+    private val viewModel: AwardsViewModel by viewModels {
+        val database = AppDatabase.getInstance(requireContext())
+        val repository = AwardRepository(database.awardDao())
+        AwardsViewModel.Factory(repository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,19 +46,18 @@ class AwardsFragment : Fragment() {
         
         setupRecyclerView()
         setupRewardBox()
-        updateLoyaltyPointsDisplay()
+        observeViewModel()
     }
 
     private fun setupRecyclerView() {
         binding.awardsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        // TODO: Implement awards adapter
+        recentAwardsAdapter = RecentAwardsAdapter()
+        binding.awardsRecyclerView.adapter = recentAwardsAdapter
     }
 
     private fun setupRewardBox() {
         binding.btnOpenBox.setOnClickListener {
-            if (loyaltyPoints >= boxCost) {
-                loyaltyPoints -= boxCost
-                updateLoyaltyPointsDisplay()
+            if (viewModel.loyaltyPoints.value >= 100) {
                 animateBoxOpening()
             } else {
                 Toast.makeText(requireContext(), "Not enough points!", Toast.LENGTH_SHORT).show()
@@ -62,8 +65,21 @@ class AwardsFragment : Fragment() {
         }
     }
 
-    private fun updateLoyaltyPointsDisplay() {
-        binding.tvLoyaltyPoints.text = "Loyalty Points: $loyaltyPoints"
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.loyaltyPoints.collect { points ->
+                        binding.tvLoyaltyPoints.text = "Loyalty Points: $points"
+                    }
+                }
+                launch {
+                    viewModel.recentAwards.collect { awards ->
+                        recentAwardsAdapter.submitList(awards)
+                    }
+                }
+            }
+        }
     }
 
     private fun animateBoxOpening() {
@@ -97,13 +113,10 @@ class AwardsFragment : Fragment() {
     }
 
     private fun showReward() {
-        val reward = possibleRewards.random()
-        Toast.makeText(requireContext(), "Congratulations! You won: $reward", Toast.LENGTH_LONG).show()
-        
-        // Add some random points as a bonus
-        val bonusPoints = Random.nextInt(10, 31)
-        loyaltyPoints += bonusPoints
-        updateLoyaltyPointsDisplay()
+        val reward = viewModel.openRewardBox()
+        if (reward != null) {
+            Toast.makeText(requireContext(), "Congratulations! You won: $reward", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onDestroyView() {

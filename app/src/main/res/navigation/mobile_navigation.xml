@@ -42,6 +42,12 @@
         tools:layout="@layout/fragment_settings" />
 
     <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.example.ecoswap.ui.favorites.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
         android:id="@+id/navigation_awards"
         android:name="com.example.ecoswap.ui.awards.AwardsFragment"
         android:label="Awards"
