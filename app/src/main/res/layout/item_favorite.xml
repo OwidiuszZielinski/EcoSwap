@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:textAppearance="?attr/textAppearanceSubtitle1"
-            app:layout_constraintEnd_toStartOf="@id/btnRemove"
+            app:layout_constraintEnd_toStartOf="@id/btnFavorite"
             app:layout_constraintStart_toEndOf="@id/ivItemImage"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Item Title" />
@@ -43,21 +43,21 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textAppearance="?attr/textAppearanceBody2"
-            app:layout_constraintEnd_toStartOf="@id/btnRemove"
+            app:layout_constraintEnd_toStartOf="@id/btnFavorite"
             app:layout_constraintStart_toEndOf="@id/ivItemImage"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             tools:text="Item description that might be longer and need to be truncated after two lines" />
 
         <ImageButton
-            android:id="@+id/btnRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnFavorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Remove from favorites"
+            android:contentDescription="@string/add_to_favorites"
             android:src="@drawable/ic_favorite"
             android:tint="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,6 +12,7 @@ import com.example.ecoswap.databinding.FragmentHomeBinding
 import com.example.ecoswap.ui.DealsAdapter
 import com.example.ecoswap.ui.apis.RetrofitInstance
 import com.example.ecoswap.ui.dto.Deal
+import com.example.ecoswap.ui.dto.FavoritesManager
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -32,6 +33,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        FavoritesManager.init(requireContext())
 
         binding.rvDeals.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

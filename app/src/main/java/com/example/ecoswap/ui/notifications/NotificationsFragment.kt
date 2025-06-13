@@ -15,11 +15,15 @@ import com.example.ecoswap.databinding.FragmentNotificationsBinding
 import com.example.ecoswap.ui.MessagesAdapter
 import com.example.ecoswap.ui.apis.RetrofitInstance
 import kotlinx.coroutines.launch
+import com.example.ecoswap.ui.dto.AppNotifications
+import com.example.ecoswap.ui.dto.NotificationItem
+import androidx.recyclerview.widget.RecyclerView
 
 class NotificationsFragment : Fragment() {
 
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var notificationsAdapter: NotificationsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,11 +37,11 @@ class NotificationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        loadMessages()
+        loadNotifications()
         
-        // Remove notification badge when entering notifications
+        // Mark notifications as read when entering notifications
+        AppNotifications.markAllAsRead()
         (activity as? MainActivity)?.let { mainActivity ->
-            mainActivity.hasUnreadMessages = false
             mainActivity.updateNotificationBadge()
             mainActivity.hideBottomNavigation()
         }
@@ -45,43 +49,20 @@ class NotificationsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvMessages.layoutManager = LinearLayoutManager(requireContext())
+        notificationsAdapter = NotificationsAdapter()
+        binding.rvMessages.adapter = notificationsAdapter
         binding.rvMessages.setPadding(0, 0, 0, 100)
     }
 
-    private fun loadMessages() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val receivedMessages = RetrofitInstance.api.getReceivedMessages(UserManager.ownerId)
-                if (receivedMessages.isEmpty()) {
-                    binding.tvNoMessages.visibility = View.VISIBLE
-                    binding.rvMessages.visibility = View.GONE
-                } else {
-                    binding.tvNoMessages.visibility = View.GONE
-                    binding.rvMessages.visibility = View.VISIBLE
-                    binding.rvMessages.adapter = MessagesAdapter(receivedMessages)
-                    
-                    // Mark unread messages as read
-                    receivedMessages.filter { !it.read }.forEach { message ->
-                        message.id?.let { messageId ->
-                            try {
-                                RetrofitInstance.api.markMessageAsRead(messageId)
-                            } catch (e: Exception) {
-                                Log.e("NotificationsFragment", "Error marking message as read", e)
-                            }
-                        }
-                    }
-                    (activity as? MainActivity)?.resetMessageCounter()
-                }
-            } catch (e: Exception) {
-                Log.e("NotificationsFragment", "Error loading messages", e)
-                Toast.makeText(requireContext(), "Error loading messages", Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun loadNotifications() {
+        val notifications = AppNotifications.getNotifications()
+        notificationsAdapter.submitList(notifications)
+        binding.tvNoMessages.visibility = if (notifications.isEmpty()) View.VISIBLE else View.GONE
     }
 
     override fun onResume() {
         super.onResume()
-        loadMessages() // Reload messages when returning to this fragment
+        loadNotifications() // Reload notifications when returning to this fragment
     }
 
     override fun onDestroyView() {
