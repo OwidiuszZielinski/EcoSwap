@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.ecoswap.databinding.ActivityLoginBinding
+import com.example.ecoswap.auth.AuthManager
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
@@ -21,9 +24,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize AuthManager
+        AuthManager.init(this)
+
         // Check if user is already logged in
-        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        if (prefs.getBoolean("is_logged_in", false)) {
+        if (AuthManager.isLoggedIn()) {
             startActivity(
                 Intent(this, MainActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -37,24 +42,38 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            // Pobierz zapisane dane
-            val savedEmail = prefs.getString("email", null)
-            val savedPassword = prefs.getString("password", null)
+            if (email.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Wprowadź email i hasło", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            if (email == savedEmail && password == savedPassword) {
-                // Save login state if "Remember Me" is checked
-                if (binding.switchRememberMe.isChecked) {
-                    prefs.edit().putBoolean("is_logged_in", true).apply()
-                }
-                
-                startActivity(
-                    Intent(this, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            // Show loading state
+            binding.loginButton.isEnabled = false
+            binding.loginButton.text = "Logowanie..."
+
+            lifecycleScope.launch {
+                val result = AuthManager.login(email, password)
+                result.fold(
+                    onSuccess = { user ->
+                        // Save login state if "Remember Me" is checked
+                        if (binding.switchRememberMe.isChecked) {
+                            // AuthManager already handles this
+                        }
+                        
+                        Toast.makeText(this@LoginActivity, "Zalogowano pomyślnie!", Toast.LENGTH_SHORT).show()
+                        startActivity(
+                            Intent(this@LoginActivity, MainActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            }
+                        )
+                        finish()
+                    },
+                    onFailure = { error ->
+                        Toast.makeText(this@LoginActivity, "Błąd logowania: ${error.message}", Toast.LENGTH_SHORT).show()
+                        binding.loginButton.isEnabled = true
+                        binding.loginButton.text = "Zaloguj"
                     }
                 )
-                finish()
-            } else {
-                Toast.makeText(this, "Nieprawidłowy email lub hasło", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -63,16 +82,34 @@ class LoginActivity : AppCompatActivity() {
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
-                // Save login state if "Remember Me" is checked
-                if (binding.switchRememberMe.isChecked) {
-                    prefs.edit().putBoolean("is_logged_in", true).apply()
-                }
-                startActivity(
-                    Intent(this@LoginActivity, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                
+                // Check if user is already authenticated
+                if (AuthManager.isLoggedIn()) {
+                    startActivity(
+                        Intent(this@LoginActivity, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        }
+                    )
+                    finish()
+                } else {
+                    // Try to validate existing token
+                    lifecycleScope.launch {
+                        val validationResult = AuthManager.validateToken()
+                        validationResult.fold(
+                            onSuccess = { user ->
+                                startActivity(
+                                    Intent(this@LoginActivity, MainActivity::class.java).apply {
+                                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    }
+                                )
+                                finish()
+                            },
+                            onFailure = { error ->
+                                Toast.makeText(this@LoginActivity, "Brak ważnej sesji. Zaloguj się ponownie.", Toast.LENGTH_SHORT).show()
+                            }
+                        )
                     }
-                )
-                finish()
+                }
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {

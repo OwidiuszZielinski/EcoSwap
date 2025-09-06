@@ -15,6 +15,7 @@ import com.example.ecoswap.databinding.ActivityMainBinding
 import androidx.lifecycle.lifecycleScope
 import com.example.ecoswap.ui.apis.RetrofitInstance
 import com.example.ecoswap.UserManager
+import com.example.ecoswap.auth.AuthManager
 import kotlinx.coroutines.launch
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.Drawable
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize AuthManager
+        AuthManager.init(this)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -99,7 +103,8 @@ class MainActivity : AppCompatActivity() {
     private fun checkUnreadMessages() {
         lifecycleScope.launch {
             try {
-                val receivedMessages = RetrofitInstance.api.getReceivedMessages(UserManager.ownerId)
+                val userId = UserManager.getCurrentUserId() ?: UserManager.ownerId
+                val receivedMessages = RetrofitInstance.api.getReceivedMessages(userId)
                 val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 val lastCount = prefs.getInt("last_message_count", 0)
                 val currentUnread = receivedMessages.count { !it.read }
@@ -177,7 +182,8 @@ class MainActivity : AppCompatActivity() {
     fun resetMessageCounter() {
         lifecycleScope.launch {
             try {
-                val receivedMessages = RetrofitInstance.api.getReceivedMessages(UserManager.ownerId)
+                val userId = UserManager.getCurrentUserId() ?: UserManager.ownerId
+                val receivedMessages = RetrofitInstance.api.getReceivedMessages(userId)
                 val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 val currentUnread = receivedMessages.count { !it.read }
                 prefs.edit().putInt("last_message_count", currentUnread).apply()

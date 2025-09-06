@@ -11,6 +11,10 @@ import com.example.ecoswap.LoginActivity
 import com.example.ecoswap.UserManager
 import com.example.ecoswap.databinding.FragmentSettingsBinding
 import com.example.ecoswap.ui.ChatActivity
+import com.example.ecoswap.auth.AuthManager
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import android.widget.Toast
 
 class SettingsFragment : Fragment() {
 
@@ -39,25 +43,39 @@ class SettingsFragment : Fragment() {
 
         binding.switchTheme.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
 
-        binding.tvUserInfo.text = "Zalogowano jako: ${UserManager.ownerId}"
+        // Display current user info
+        val currentUser = UserManager.getCurrentUser()
+        if (currentUser != null) {
+            binding.tvUserInfo.text = "Zalogowano jako: ${currentUser.firstName} ${currentUser.lastName} (${currentUser.email})"
+        } else {
+            binding.tvUserInfo.text = "Zalogowano jako: ${UserManager.ownerId}"
+        }
 
         binding.btnLogout.setOnClickListener {
-            requireActivity().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE)
-                .edit()
-                .putBoolean("is_logged_in", false)
-                .apply()
-
-            val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            lifecycleScope.launch {
+                val result = AuthManager.logout()
+                result.fold(
+                    onSuccess = {
+                        Toast.makeText(requireContext(), "Wylogowano pomyślnie", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        }
+                        startActivity(intent)
+                        requireActivity().finish()
+                    },
+                    onFailure = { error ->
+                        Toast.makeText(requireContext(), "Błąd wylogowania: ${error.message}", Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
-            startActivity(intent)
-            requireActivity().finish()
         }
 
         binding.btnStartChat.setOnClickListener {
             val intent = Intent(requireContext(), ChatActivity::class.java)
-            intent.putExtra("receiverId", UserManager.ownerId)
-            intent.putExtra("userName", UserManager.ownerId)
+            val userId = UserManager.getCurrentUserId() ?: UserManager.ownerId
+            val userName = currentUser?.username ?: UserManager.ownerId
+            intent.putExtra("receiverId", userId)
+            intent.putExtra("userName", userName)
             startActivity(intent)
         }
     }

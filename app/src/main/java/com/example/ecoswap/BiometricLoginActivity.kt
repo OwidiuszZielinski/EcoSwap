@@ -2,11 +2,15 @@ package com.example.ecoswap
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.ecoswap.databinding.ActivityBiometricLoginBinding
+import com.example.ecoswap.auth.AuthManager
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
 
 class BiometricLoginActivity : AppCompatActivity() {
@@ -20,6 +24,9 @@ class BiometricLoginActivity : AppCompatActivity() {
         binding = ActivityBiometricLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize AuthManager
+        AuthManager.init(this)
+
         setupBiometricAuthentication()
     }
 
@@ -28,13 +35,35 @@ class BiometricLoginActivity : AppCompatActivity() {
         biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 super.onAuthenticationSucceeded(result)
-                // Po sukcesie przejdź do MainActivity
-                startActivity(
-                    Intent(this@BiometricLoginActivity, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                
+                // Check if user is already authenticated
+                if (AuthManager.isLoggedIn()) {
+                    startActivity(
+                        Intent(this@BiometricLoginActivity, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        }
+                    )
+                    finish()
+                } else {
+                    // Try to validate existing token
+                    lifecycleScope.launch {
+                        val validationResult = AuthManager.validateToken()
+                        validationResult.fold(
+                            onSuccess = { user ->
+                                startActivity(
+                                    Intent(this@BiometricLoginActivity, MainActivity::class.java).apply {
+                                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    }
+                                )
+                                finish()
+                            },
+                            onFailure = { error ->
+                                Toast.makeText(this@BiometricLoginActivity, "Brak ważnej sesji. Zaloguj się ponownie.", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        )
                     }
-                )
-                finish()
+                }
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
